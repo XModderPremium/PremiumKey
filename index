@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Rainbow Access</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Orbitron', monospace;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Matrix Rain Effect */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+        }
+
+        .matrix-column {
+            position: absolute;
+            font-family: monospace;
+            font-size: 20px;
+            animation: matrix-fall linear infinite;
+            text-shadow: 0 0 8px currentColor;
+        }
+
+        @keyframes matrix-fall {
+            0% { top: -100%; opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        /* Main Container */
+        .container {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+            z-index: 10;
+            padding-bottom: 60px; /* space for footer */
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .main-title {
+            font-size: clamp(2rem, 8vw, 4rem);
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            background: linear-gradient(45deg, #ff0080, #00ff80, #0080ff, #ff8000, #8000ff, #ffff00);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbow-flow 4s ease infinite, glow 2s ease-in-out infinite alternate;
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: clamp(1.2rem, 5vw, 2rem);
+            font-weight: 700;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+            color: #00ff41;
+            text-shadow: 0 0 10px #00ff41;
+            animation: flicker 4s ease-in-out infinite;
+        }
+
+        .get-key-btn {
+            padding: 15px 40px;
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 50px;
+            border: none;
+            background: linear-gradient(45deg, #ff0080, #00ff80, #0080ff, #ff8000, #8000ff, #ffff00);
+            background-size: 400% 400%;
+            animation: rainbow-bg 6s linear infinite, btn-pulse 3s ease-in-out infinite;
+            color: #000;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 25px rgba(255,255,255,0.3);
+        }
+
+        .get-key-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 50px rgba(255,255,255,0.6), inset 0 0 30px rgba(255,255,255,0.2);
+        }
+
+        /* Login Panel */
+        .login-panel {
+            width: 400px;
+            max-width: 100%;
+            background: rgba(20, 0, 40, 0.95);
+            border-left: 3px solid transparent;
+            border-image: linear-gradient(180deg, #ff0080, #00ff80, #0080ff, #ff8000, #8000ff) 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: -10px 0 30px rgba(255,255,255,0.2);
+            position: relative;
+        }
+
+        .login-title {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, #ff0080, #00ff80, #0080ff, #ff8000);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbow-flow 5s linear infinite;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #fff;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #888;
+            color: #fff;
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #00ff80;
+            box-shadow: 0 0 15px #00ff80;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            margin-top: 20px;
+            background: linear-gradient(90deg, #ff0080, #00ff80, #0080ff, #ff8000);
+            background-size: 300% 300%;
+            color: #000;
+            border: none;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            animation: rainbow-bg 6s linear infinite;
+            border-radius: 10px;
+        }
+
+        .login-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255,255,255,0.6);
+        }
+
+        /* Footer */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.9);
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding: 15px;
+            text-align: center;
+            z-index: 100;
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.7);
+            letter-spacing: 1px;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .loading-screen.active {
+            display: flex;
+        }
+
+        .loading-text {
+            font-size: clamp(1.2rem, 4vw, 2rem);
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            background: linear-gradient(45deg, #ff0080, #00ff80, #0080ff, #ff8000);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbow-flow 5s linear infinite;
+        }
+
+        .loading-bar {
+            width: 90%;
+            max-width: 400px;
+            height: 30px;
+            border: 2px solid #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #ff0080, #00ff80, #0080ff, #ff8000, #8000ff);
+            background-size: 300% 300%;
+            width: 0;
+            transition: width 4s linear;
+            animation: rainbow-bg 6s linear infinite;
+        }
+
+        .loading-screen.active .loading-progress {
+            width: 100%;
+        }
+
+        /* Animations */
+        @keyframes rainbow-flow {
+            0%,100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes rainbow-bg {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes glow {
+            0% { filter: drop-shadow(0 0 10px rgba(255,255,255,0.2)); }
+            100% { filter: drop-shadow(0 0 30px rgba(255,255,255,0.6)); }
+        }
+
+        @keyframes btn-pulse {
+            0%,100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes flicker {
+            0%,100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix Rain Background -->
+    <div class="matrix-bg" id="matrixBg"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Main Content -->
+        <div class="main-content">
+            <h1 class="main-title">TRIAL FREE KEY</h1>
+            <h2 class="subtitle">4 DAYS TRIAL</h2>
+            <button class="get-key-btn" onclick="generateKey()">GET FREE KEY</button>
+        </div>
+
+        <!-- Login Panel -->
+        <div class="login-panel">
+            <h2 class="login-title">PREMIUM USERS ONLY</h2>
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter username">
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter password">
+            </div>
+            <button class="login-btn" onclick="handleLogin()">LOGIN</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <span>© 2025 ZAMAS | MATRIX SYSTEM v3.0 | CREATED: JANUARY 2025 | ALL RIGHTS RESERVED</span>
+    </footer>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-text">Generating your KEY...</div>
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+    </div>
+
+    <script>
+        // Matrix rainbow rain
+        function createMatrixRain() {
+            const matrixBg = document.getElementById('matrixBg');
+            const characters = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+            const rainbowColors = ['#ff0080', '#00ff80', '#0080ff', '#ff8000', '#8000ff', '#ffff00'];
+
+            const columnCount = window.innerWidth > 768 ? 25 : 12;
+
+            for (let i = 0; i < columnCount; i++) {
+                const column = document.createElement('div');
+                column.className = 'matrix-column';
+                column.style.left = Math.random() * 100 + '%';
+                column.style.animationDuration = (Math.random() * 5 + 3) + 's';
+                column.style.animationDelay = Math.random() * 5 + 's';
+
+                const randomColor = rainbowColors[Math.floor(Math.random() * rainbowColors.length)];
+                column.style.color = randomColor;
+
+                let text = '';
+                for (let j = 0; j < 30; j++) {
+                    text += characters[Math.floor(Math.random() * characters.length)] + '<br>';
+                }
+                column.innerHTML = text;
+                matrixBg.appendChild(column);
+            }
+        }
+
+        // Generate key function
+        function generateKey() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            loadingScreen.classList.add('active');
+
+            setTimeout(() => {
+                window.location.href = 'https://www.roblox.com/share?code=4678e6da58e7384f86dfcd88e22799c7&type=Server';
+            }, 4000);
+        }
+
+        // Login handler
+        function handleLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (!username || !password) {
+                alert('Please enter username and password');
+                return;
+            }
+
+            alert('Premium Access: Verifying credentials...');
+        }
+
+        window.addEventListener('load', createMatrixRain);
+        window.addEventListener('resize', () => {
+            const matrixBg = document.getElementById('matrixBg');
+            matrixBg.innerHTML = '';
+            createMatrixRain();
+        });
+    </script>
+</body>
+</html>
